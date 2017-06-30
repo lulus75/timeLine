@@ -1,11 +1,6 @@
 # TimeLine
 
-## Installation
-
-`npm install` pour installer les dépendances
-
-## Démarrage
-
-Pour démarrer un serveur de dev : `npm run dev` (lancera *nodemon* avec l'option *--inspect* pour le debug)
-
-Pour démarrer un serveur de prod : `npm run start` (lance simplement le serveur avec *node server.js*)
+1- Download or clone this repo
+2- run npm install in your folder
+3- npm run dev for dev mode and debug or npm start
+4- go on localhost:3000
