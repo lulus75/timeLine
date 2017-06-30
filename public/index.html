@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>timeLine Node.js</title>
+
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="/node_modules/angular/angular.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script/script.js"></script>
+    <script src="script/angular-uuid2.js"></script>
+</head>
+<body ng-app="timeLineApp" class="container" ng-controller="timeLineController as timeLine">
+
+    <div ng-show="timeLine.isDisconnected">
+        <h3>Choisissez un pseudo pour rejoindre le timeLine :</h3>
+        <form class="form-inline" name="loginForm" ng-submit="timeLine.loginUser()">
+            <input type="text" class="form-control" placeholder="Votre pseudo ..." required ng-model="timeLine.pseudo">
+            <input type="submit" class="btn btn-primary" value="Rejoindre">
+        </form>
+    </div>
+
+    <div ng-hide="timeLine.isDisconnected">
+        <main class="col-sm-9">
+            <div  class="col-sm-2"></div>
+           <div class=" col-sm-9 form-comment">
+            <form class="form-inline" name="messageForm" ng-submit="timeLine.sendPost()">
+                <p><em>(Connecté en tant que <strong>{{timeLine.pseudo}}</strong>)</em></p>
+                <input type="text" class="form-control" placeholder="http://" size="50" ng-model="timeLine.url"  ><br><br>
+                <input type="text" class="form-control" placeholder="Votre message ..." size="50" ng-model="timeLine.messageText" required>
+                <input type="submit" class="btn btn-primary" value="Envoyer">
+            </form>
+            </div>
+            <div class="col-sm-12" ng-repeat="post in timeLine.messages">
+
+
+                <br><div class="col-sm-2">
+                    <div class="thumbnail imgPost">
+                        <img class="img-responsive userPicture" src="{{post.imgUrl}}">
+                    </div>
+                </div><br>
+                    <div class="col-sm-8">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>{{ post.pseudo}}</strong> <span class="text-muted">commented {{ post.date | date : 'Le dd/MM à HH:mm' }}</span>
+                                 <button type="button" class="btn btn-danger btn-xs pull-right" value="Supprimer" ng-hide="post.pseudo !== timeLine.pseudo" ng-click="timeLine.delete(post.id)">Delete</button>
+
+                            </div>
+                            <div class="panel-body">
+                                {{ post.content }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+        </main>
+
+        <aside class="col-md-3">
+            <h4>Membres connectés</h4>
+            <ul>
+                <li ng-repeat="user in timeLine.users">{{user.pseudo}} <span ng-show="user.id === timeLine.socket.id">(vous)</span></li>
+            </ul>
+        </aside>
+        <aside class="col-md-3">
+
+
+        </aside>
+    </div>
+
+</body>
+</html>
